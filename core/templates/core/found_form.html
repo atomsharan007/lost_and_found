@@ -1,0 +1,204 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Report Found Item - HITAM Lost & Found</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #f0f7f1;
+    }
+    nav {
+      background-color: #1b4d2e;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+nav {
+    background-color: #1b4d2e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+nav .logo {
+    display: flex;
+    align-items: center;
+}
+
+nav img {
+    height: 50px;
+    margin-right: 15px;
+}
+
+nav h1 {
+    color: #fff;
+    font-size: 22px;
+    margin: 0;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin: 0;
+    align-items: center;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #a3c9a8; 
+}
+.nav-button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 17px; 
+    font-weight: bold; 
+    display: inline-block; 
+    transition: background-color 0.3s ease, color 0.3s ease; 
+    color: #fff; 
+}
+
+.nav-button-login {
+    background-color: #3b8e4e; 
+}
+
+.nav-button-login:hover {
+    background-color: #2e7a3e; 
+}
+
+.nav-button-logout {
+    background-color: #4CAF50; 
+    margin-left: 15px; 
+}
+
+.nav-button-logout:hover {
+    background-color: #45a049; 
+}
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #2e7d32;
+    }
+    form label {
+      display: block;
+      margin-top: 15px;
+      color: #333;
+    }
+    form input, form textarea, form select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    form button {
+      display: block;
+      margin: 30px auto 0;
+      padding: 12px 25px;
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    form button:hover {
+      background-color: #27672b;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #e8f5e9;
+      color: #666;
+    }
+
+  </style>
+</head>
+<body>
+<nav>
+  <div class="logo">
+    <img src="{% static 'core/images/LOGO.jpg' %}" alt="HITAM Logo">
+    <h1>HITAM Lost & Found</h1>
+  </div>
+  <ul>
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'report_lost' %}">Report Lost</a></li>
+    <li><a href="{% url 'report_found' %}">Report Found</a></li>
+    <li><a href="{% url 'gallery' %}">Gallery</a></li>
+    {% if user.is_authenticated %}
+      <li>
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="nav-button nav-button-logout">Logout</button>
+        </form>
+      </li>
+    {% else %}
+      <li>
+        <a href="{% url 'login' %}" class="nav-button nav-button-login">Login</a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+
+  <div class="container">
+    <h2>Report a Found Item</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <label for="id_item_name">Item Name</label>
+      <input type="text" name="item_name" id="id_item_name" required>
+
+      <label for="id_location">Location Found</label>
+      <input type="text" name="location" id="id_location" required>
+
+      <label for="id_date_found">Date Found</label>
+      <input type="date" name="date_found" id="id_date_found" required>
+
+      <label for="id_description">Description</label>
+      <textarea name="description" id="id_description" rows="4"></textarea>
+
+      <label for="id_contact">Contact Phone Number</label>
+      <input type="tel" name="contact" id="id_contact" required pattern="[0-9]{10}">
+
+      <label for="id_image">Upload Image</label>
+      <input type="file" name="image" id="id_image">
+      <input type="hidden" name="item_type" value="Found">
+
+      <button type="submit">Submit Found Report</button>
+    </form>
+  </div>
+  <footer>
+    &copy; {{ now|date:"Y" }} HITAM Lost & Found | Thank you for helping a student in need
+  </footer>
+</body>
+</html>

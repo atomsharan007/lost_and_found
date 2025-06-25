@@ -1,0 +1,238 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HITAM Lost & Found</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f7f1;
+    }
+
+nav {
+    background-color: #1b4d2e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+nav .logo {
+    display: flex;
+    align-items: center;
+}
+
+nav img {
+    height: 50px;
+    margin-right: 15px;
+}
+
+nav h1 {
+    color: #fff;
+    font-size: 22px;
+    margin: 0;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin: 0;
+    align-items: center;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #a3c9a8; 
+}
+.nav-button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 17px; 
+    font-weight: bold; 
+    display: inline-block; 
+    transition: background-color 0.3s ease, color 0.3s ease; 
+    color: #fff; 
+}
+
+.nav-button-login {
+    background-color: #3b8e4e; 
+}
+
+.nav-button-login:hover {
+    background-color: #2e7a3e; 
+}
+
+.nav-button-logout {
+    background-color: #4CAF50; 
+    margin-left: 15px; 
+}
+
+.nav-button-logout:hover {
+    background-color: #45a049; 
+}
+
+.welcome-text {
+    color: #fff;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 8px 0; 
+}
+
+    .hero {
+      text-align: center;
+      padding: 10px 20px 20px;
+    }
+
+    .hero h2 {
+      font-size: 32px;
+      color: #2e7d32;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: #444;
+      margin-bottom: 40px;
+    }
+
+    .card-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      padding: 20px 40px 60px;
+    }
+
+    .card {
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      width: 280px;
+      padding: 30px 20px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card i {
+      font-size: 48px;
+      color: #1b5e20;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      font-size: 22px;
+      margin: 10px 0;
+      color: #1b5e20;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .card a {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #2e7d32;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      padding: 20px;
+      background-color: #e8f5e9;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <img src="{% static 'core/images/LOGO.jpg' %}" alt="HITAM Logo">
+    <h1>HITAM Lost & Found</h1>
+  </div>
+  <ul>
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'report_lost' %}">Report Lost</a></li>
+    <li><a href="{% url 'report_found' %}">Report Found</a></li>
+    <li><a href="{% url 'gallery' %}">Gallery</a></li>
+    {% if user.is_authenticated %}
+      <li>
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="nav-button nav-button-logout">Logout</button>
+        </form>
+      </li>
+    {% else %}
+      <li>
+        <a href="{% url 'login' %}" class="nav-button nav-button-login">Login</a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+  <!-- Hero Section -->
+  <div class="hero">
+    <h2>Welcome to HITAM Lost & Found Hub</h2>
+    <p>Your campus safety and belongings matter. Help reunite items with their rightful owners.</p>
+  </div>
+
+  <!-- Cards Section -->
+  <div class="card-container">
+    <div class="card">
+      <i class="fas fa-search"></i>
+      <h3>Report Lost</h3>
+      <p>Lost something? Fill out the details so others can help you find it.</p>
+      <a href="{% url 'report_lost' %}">Report</a>
+    </div>
+
+    <div class="card">
+      <i class="fas fa-box-open"></i>
+      <h3>Report Found</h3>
+      <p>Found an item on campus? Help return it by reporting here.</p>
+      <a href="{% url 'report_found' %}">Report</a>
+    </div>
+
+    <div class="card">
+      <i class="fas fa-images"></i>
+      <h3>Item Gallery</h3>
+      <p>Browse all reported items to find your lost belongings.</p>
+      <a href="{% url 'gallery' %}">Explore</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    &copy; {{ now|date:"Y" }} HITAM Lost & Found | Built with for our campus
+  </footer>
+
+</body>
+</html>
